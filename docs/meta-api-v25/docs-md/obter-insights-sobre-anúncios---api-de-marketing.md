@@ -1,0 +1,83 @@
+<!-- Fonte: Obter insights sobre anúncios - API de Marketing.html -->
+<!-- URL: https://developers.facebook.com/docs/instagram/ads-api/guides/get-ad-insights -->
+<!-- API: v25.0 | Data: 2026-03-30 -->
+
+# Obter insights sobre anúncios
+
+
+Desde 3 de junho de 2024, é possível usar o campo `boost_ads_list` para acompanhar informações anteriores de anúncios turbinados no Instagram relacionadas ao anúncio. Consulte nosso [blog](https://developers.facebook.com/blog/post/2024/06/03/instagram-boost-signal-for-ad-eligibility/) para obter mais informações.
+
+
+Use a [API de Insights](https://developers.facebook.com/docs/marketing-api/insights/) da conta de anúncios para visualizar estatísticas sobre os anúncios do Instagram.
+
+```
+curl -G \ -d 'access_token=<ACCESS_TOKEN>' \ https://graph.facebook.com/v25.0/<CAMPAIGN_ID>/insights
+```
+
+
+Se você estiver veiculando uma campanha no Instagram e no Facebook, adicione `breakdowns=publisher_platform, platform_position` para visualizar as estatísticas de posicionamentos do Facebook e do Instagram separadamente:
+
+```
+curl -X GET \
+-d 'access_token=<ACCESS_TOKEN>' \
+-d 'fields=impressions' \
+-d 'breakdown=publisher_platform, platform_position' \
+"https://graph.facebook.com/<API_VERSION>/<AD_SET_ID>/insights"
+```
+
+
+O resultado fica assim:
+
+```
+{
+"data": [
+    {
+      "impressions": "322",
+      "date_start": "2024-03-26",
+      "date_stop": "2024-04-24",
+      "publisher_platform": "instagram",
+      "platform_position": "feed"
+    },
+    {
+      "impressions": "13",
+      "date_start": "2024-03-26",
+      "date_stop": "2024-04-24",
+      "publisher_platform": "instagram",
+      "platform_position": "instagram_explore"
+    },
+    {
+      "impressions": "168",
+      "date_start": "2024-03-26",
+      "date_stop": "2024-04-24",
+      "publisher_platform": "instagram",
+      "platform_position": "instagram_reels"
+    },
+    {
+      "impressions": "617",
+      "date_start": "2024-03-26",
+      "date_stop": "2024-04-24",
+      "publisher_platform": "instagram",
+      "platform_position": "instagram_stories"
+    }
+  ],
+  "paging": {
+    ...
+  }
+}
+```
+
+
+Ao solicitar o detalhamento por `publisher_platform, platform_position` para obter insights sobre uma campanha de anúncios, as quatro localizações de posicionamento da plataforma do Instagram são `feed`, `instagram_explore`, `instagram_reels` e `instagram_stories`.
+
+
+Existem outras combinações de detalhamento que permitem o uso de `publisher_platform, platform_position`. Ao rastrear o desempenho de anúncios que têm posicionamentos no Facebook e no Instagram com ferramentas externas, use a macro `url_tags`[SITE_SOURCE_NAME](https://developers.facebook.com/docs/marketing-api/guides/instagramads/ad_creative#tag) para diferenciar os posicionamentos.
+
+
+### Tags de rastreamento
+
+
+As tags de visualização não estão disponíveis publicamente. Se a visualização de tags de um fornecedor aprovado nas campanhas de dispositivos móveis do Facebook for permitida, ela também estará disponível nos anúncios do Instagram. Use o campo`url_tag`[criativo do anúncio](https://developers.facebook.com/docs/marketing-api/adcreative) com os anúncios do Instagram.
+
+
+Você pode usar tags de rastreamento de terceiros para os anúncios do Instagram. No entanto, as tags não otimizam a veiculação de anúncios para ferramentas de rastreamento de terceiros. Para verificar se uma ferramenta de rastreamento de terceiros rastreia os anúncios do Instagram corretamente, use o campo `url_tag` do [criativo do anúncio](https://developers.facebook.com/docs/marketing-api/adcreative) com`utm_source=instagram`.
+[○](https://developers.facebook.com/docs/instagram/ads-api/guides/get-ad-insights#)Nesta Página[Obter insights sobre anúncios](https://developers.facebook.com/docs/instagram/ads-api/guides/get-ad-insights#obter-insights-sobre-an-ncios) react-mount-point-unstable Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4cgaWlR8PX4WhSMCcSb9kvp1wFTX69opwo_ZR-uZE0uhAJhGKKXyA3vJOLFg_aem_gG6MCAjGqXlsFRK7sVi2Yg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5dERkGDqJW6d3s9lruU-iSoRIJ_I_A75OSA9GNWO6Yyhha6EHsmlqWyqM0rA_aem_Dn89rv_LvECRHPkvp7TyWg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5-GWTdVhiVHEIHn4k-O-QdqxynKq7dlJkzAyD7BiiQM_asSnGybgdqVU7mwg_aem_7gdN1lM2oHAdRl9VL5mxfg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR593-JFvi56e4rQIaSO3Itq5If3hSah14PQxHTXU5ZO1ImSedtlobuTT0YjfQ_aem_tZ7CpjnFpWG9XvtpOYLRUg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4cgaWlR8PX4WhSMCcSb9kvp1wFTX69opwo_ZR-uZE0uhAJhGKKXyA3vJOLFg_aem_gG6MCAjGqXlsFRK7sVi2Yg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Careers](https://www.facebook.com/careers)Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR435sFUrxCSRYOGx7QBhs6Fy7O12lcwjdafeqOF7HiJW6AK1bgde-eSViYvOA_aem_IQ8Jf0sCn337C99H8Y_z_g&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4MYtNwl_GeYg3p-4sr2C9jc0QnRssH6IfoHhAdP5AUPDg8zL4Frs2Wzp32Bg_aem_JWL8fcy46g43GwKni9h6og&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4MYtNwl_GeYg3p-4sr2C9jc0QnRssH6IfoHhAdP5AUPDg8zL4Frs2Wzp32Bg_aem_JWL8fcy46g43GwKni9h6og&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR6iWTAcsaoNDeGONvXDmrJyHh7HNNddWajHULwqgbZazjzeLsDVj_eyJZRRGw_aem_3Ph2VfUjKr-1AapXT3-84w&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5dERkGDqJW6d3s9lruU-iSoRIJ_I_A75OSA9GNWO6Yyhha6EHsmlqWyqM0rA_aem_Dn89rv_LvECRHPkvp7TyWg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Careers](https://www.facebook.com/careers)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5-GWTdVhiVHEIHn4k-O-QdqxynKq7dlJkzAyD7BiiQM_asSnGybgdqVU7mwg_aem_7gdN1lM2oHAdRl9VL5mxfg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5_Tr3HytkrskvS9T6xGs6LO-viJqfVihYlJ2516lxf0ufolcSU-5HcTw584Q_aem_zMiVGJT7R0fme3MTeAwg6w&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR593-JFvi56e4rQIaSO3Itq5If3hSah14PQxHTXU5ZO1ImSedtlobuTT0YjfQ_aem_tZ7CpjnFpWG9XvtpOYLRUg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4MYtNwl_GeYg3p-4sr2C9jc0QnRssH6IfoHhAdP5AUPDg8zL4Frs2Wzp32Bg_aem_JWL8fcy46g43GwKni9h6og&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4yPwwonXtTvSFBt-XAbVW-CLVQK-nHxFFjOSJljYJXq2S9R-D3Ddn6NbY5lg_aem_nQiuXIViLZYZ2NODtrrTFg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Careers](https://www.facebook.com/careers)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4cgaWlR8PX4WhSMCcSb9kvp1wFTX69opwo_ZR-uZE0uhAJhGKKXyA3vJOLFg_aem_gG6MCAjGqXlsFRK7sVi2Yg&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR6eLmtL2ir99seZ4ysbAzLeEJAuYJ15jkjjbbn9QkFSTgGXiXli-E-Qs91n0A_aem_42v0DngY3beeHK0dCbajpA&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR6eLmtL2ir99seZ4ysbAzLeEJAuYJ15jkjjbbn9QkFSTgGXiXli-E-Qs91n0A_aem_42v0DngY3beeHK0dCbajpA&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR6iWTAcsaoNDeGONvXDmrJyHh7HNNddWajHULwqgbZazjzeLsDVj_eyJZRRGw_aem_3Ph2VfUjKr-1AapXT3-84w&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR6eLmtL2ir99seZ4ysbAzLeEJAuYJ15jkjjbbn9QkFSTgGXiXli-E-Qs91n0A_aem_42v0DngY3beeHK0dCbajpA&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT51hQkxNu89nIkRrS5RU9M2bdKV_278aSyMaWkGvgIe7J_thdj2oTAjRzOVpUa3yxG4NC8CeEYBwDC47ixHBxa0zZATM4WrY27vMLE3G42-huo0MowNt_3R67zYB10tn2ee-40gDxTm44s-FzwnVpDgoZI)[Careers](https://www.facebook.com/careers)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)English (US) react-mount-point-unstable Este documento foi útil?SimNão

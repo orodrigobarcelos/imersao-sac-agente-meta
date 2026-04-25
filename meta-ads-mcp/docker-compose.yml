@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  meta-ads-mcp:
+    build: .
+    container_name: meta-ads-mcp-server
+    ports:
+      - "3000:3000"
+    environment:
+      - META_ACCESS_TOKEN=${META_ACCESS_TOKEN}
+      - META_APP_ID=${META_APP_ID}
+      - META_APP_SECRET=${META_APP_SECRET}
+      - PORT=3000
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  nginx:
+    image: nginx:alpine
+    container_name: meta-ads-mcp-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - meta-ads-mcp
+    restart: unless-stopped

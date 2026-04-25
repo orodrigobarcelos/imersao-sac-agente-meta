@@ -1,0 +1,103 @@
+<!-- Fonte: Adicionar links de site - API de Marketing.html -->
+<!-- URL: https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links -->
+<!-- API: v25.0 | Data: 2026-03-30 -->
+
+# Recurso Adicionar links de site
+
+
+O [recurso **Adicionar links de site** no Gerenciador de Anúncios](https://www.facebook.com/business/help/1127018781828932) é uma otimização do criativo Advantage+ que exibe URLs adicionais abaixo da sua mídia única estática ou dinâmica (apenas no Feed do Facebook) quando há probabilidade de melhorar o desempenho. Este guia aborda o uso do recurso Adicionar links de site usando a API de Marketing.
+
+
+#### Critérios de qualificação
+
+
+Para poder usar essa funcionalidade, sua campanha de anúncios precisará ter o seguinte:
+
+
+- Tráfego, Engajamento, Leads ou Vendas como objetivo do anúncio
+- Site como local de conversão
+- Formato de anúncio de mídia única (imagem ou vídeo)
+
+
+## Antes de começar
+
+
+Configure suas campanhas de anúncios seguindo estas instruções:
+
+
+- [Criar uma campanha de anúncios](https://developers.facebook.com/docs/marketing-api/get-started/basic-ad-creation/create-an-ad-campaign)
+- [Criar um conjunto de anúncios](https://developers.facebook.com/docs/marketing-api/get-started/basic-ad-creation/create-an-ad-set)
+[○](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#)
+
+## Fornecer um criativo e um anúncio
+
+
+### Implementação de criativo independente
+
+
+#### Antes
+
+
+```
+curl -X POST \ -F 'name=Creative With Site Links' \ -F 'object_story_spec={ "link_data": { "link": "<URL>", }, "page_id": "<PAGE_ID>", "instagram_actor_id": "<INSTAGRAM_ACTOR_ID>", }' \ -F 'access_token=<ACCESS_TOKEN>' \ https://graph.facebook.com/v25.0/act_<AD_ACCOUNT_ID>/adcreatives
+```
+
+
+#### Depois
+
+
+Os campos novos estão destacados em negrito.
+
+```
+curl -X POST \ -F 'name=Creative With Site Links' \ -F 'object_story_spec={ "link_data": { "link": "<URL>", }, "page_id": "<PAGE_ID>", "instagram_actor_id": "<INSTAGRAM_ACTOR_ID>", }' \ -F 'creative_sourcing_spec={ "site_links_spec": [{ "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }, { "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }, { "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }, { "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }], }' \ -F 'degrees_of_freedom_spec={ "creative_features_spec": { "site_extensions": { "enroll_status": "OPT_IN", }, }, }' \  -F 'access_token=<ACCESS_TOKEN>' \ https://graph.facebook.com/v25.0/act_<AD_ACCOUNT_ID>/adcreatives
+```
+
+
+### Criação de anúncios
+
+
+#### Antes
+
+
+```
+-F 'creative={ "object_story_spec": { "page_id": "<PAGE_ID>", "link_data": { "link": "<WEBSITE_URL>", } }, }' \ -F "adset_id=<ADSET_ID>" \ -F "name=New Ad" \ -F "status=PAUSED" \ -F "access_token=<ACCESS_TOKEN>" \ https://graph.facebook.com/v25.0/act_<AD_ACCOUNT_ID>/ads
+```
+
+
+#### Depois
+
+
+Os campos novos estão destacados em negrito.
+
+```
+curl -X POST \ -F 'creative={ "object_story_spec": { "page_id": "<PAGE_ID>", "link_data": { "link": "<WEBSITE_URL>", } }, "creative_sourcing_spec": { "site_links_spec": [{ "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }, { "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }, { "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }, { "site_link_title": "<SITE_LINK_TITLE>", "site_link_url" : "<SITE_LINK_URL>", }], }, "degrees_of_freedom_spec": { "creative_features_spec": { "site_extensions": { "enroll_status": "OPT_IN", } } } }' \ -F "adset_id=<ADSET_ID>" \ -F "name=New Ad" \ -F "status=PAUSED" \ -F "access_token=<ACCESS_TOKEN>" \ https://graph.facebook.com/v25.0/act_<AD_ACCOUNT_ID>/ads
+```
+
+
+### Parâmetros
+
+
+| Nome | Descrição |
+| --- | --- |
+| site_link_title | Especifica o rótulo de exibição do link do site. Pode ser adicionado a site_links_spec , consulte o artigo Ad Creative Site Links Spec . |
+| site_link_url | Especifica o URL do link do site. Pode ser adicionado a site_links_spec , consulte o artigo Ad Creative Site Links Spec . |
+| site_link_image_hash | Especifica a imagem do link do site. Use site_link_image_hash ou site_link_image_url . Quando os dois estiverem presentes, site_link_image_url será priorizado. Pode ser adicionado a site_links_spec , consulte o artigo Ad Creative Site Links Spec . |
+| site_link_image_url | Especifica a imagem do link do site. Use site_link_image_hash ou site_link_image_url . Quando os dois estiverem presentes, site_link_image_url será priorizado. Pode ser adicionado a site_links_spec , consulte o artigo Ad Creative Site Links Spec . |
+| site_extensions | "Adicionar links de site" é uma otimização do criativo Advantage+ que exibe URLs adicionais abaixo da sua mídia única estática ou mídia única dinâmica quando há probabilidade de melhorar o desempenho. Defina o campo enroll_status como OPT_IN para habilitar o recurso. Pode ser adicionado a creative_features_spec . Para mais informações, consulte Ad Creative Features Details . |
+
+[○](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#)
+
+## Saiba mais
+
+
+### Central de Ajuda para Empresas
+
+
+- [Como criar anúncios com links de site no Gerenciador de Anúncios da Meta](https://www.facebook.com/business/help/1127018781828932)
+
+
+### Referência da API de Marketing
+
+
+- [Ad Creative](https://developers.facebook.com/docs/marketing-api/reference/ad-creative#fields) - [Ad Creative Sourcing Spec](https://developers.facebook.com/docs/marketing-api/reference/ad-creative-sourcing-spec/) - [Ad Creative Site Links Spec](https://developers.facebook.com/docs/marketing-api/reference/ad-creative-site-links-spec/) - [Ad Creative Degrees Of Freedom Spec](https://developers.facebook.com/docs/marketing-api/reference/ad-creative-degrees-of-freedom-spec/) - [Ad Creative Features Spec](https://developers.facebook.com/docs/marketing-api/reference/ad-creative-features-spec/) - [Ad Creative Feature Details](https://developers.facebook.com/docs/marketing-api/reference/ad-creative-feature-details/) - [Ad Creative Object Story Spec](https://developers.facebook.com/docs/marketing-api/reference/ad-creative-object-story-spec/)
+[○](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#)[○](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#)Nesta Página[Recurso Adicionar links de site](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#recurso-adicionar-links-de-site)[Antes de começar](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#antes-de-come-ar)[Fornecer um criativo e um anúncio](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#fornecer-um-criativo-e-um-an-ncio)[Implementação de criativo independente](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#implementa--o-de-criativo-independente)[Criação de anúncios](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#cria--o-de-an-ncios)[Parâmetros](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#par-metros)[Saiba mais](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#saiba-mais)[Central de Ajuda para Empresas](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#central-de-ajuda-para-empresas)[Referência da API de Marketing](https://developers.facebook.com/docs/marketing-api/creative/advantage-creative/add-site-links#refer-ncia-da-api-de-marketing) react-mount-point-unstable Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5Zc0aGeBZYpwmcMCRyp-S4-eqHC4qUIvM3XIewGTYHJoWB8TPrWRBlXHa5Hg_aem_G9JK63v-ShE78y3sFFO8Mg&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5hBvFEixQCYf5WPixqAUNwGXpCvV9qXGGgeXXkCLNd68jN6nKb2DPF7_uIXg_aem_95AS25xVeElWnTScWIzKwA&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR7kaB725f1mqZOEmfifxiLZrvaLLAkcq7wtOiCjLX21UfZKe6RaDCV0zshVjQ_aem_xKm2ZcAyoNlk1auzJmtK7g&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4Doz9QE9wOmqyjFjXr6os7wHvO7VMELKzSwO-RqZQJ_0NTVVSkYE14Y9VEdg_aem_ZmFrZWR1bW15MTZieXRlcw&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR7kaB725f1mqZOEmfifxiLZrvaLLAkcq7wtOiCjLX21UfZKe6RaDCV0zshVjQ_aem_xKm2ZcAyoNlk1auzJmtK7g&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Careers](https://www.facebook.com/careers)Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5hBvFEixQCYf5WPixqAUNwGXpCvV9qXGGgeXXkCLNd68jN6nKb2DPF7_uIXg_aem_95AS25xVeElWnTScWIzKwA&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR6YIEV-al1c46yb3akD_z8s5IAuGnzAXt4ROIHPzhjXIpvacqume4imE7PQ0g_aem_TC72cDujChJj2HfkarXagQ&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5Zc0aGeBZYpwmcMCRyp-S4-eqHC4qUIvM3XIewGTYHJoWB8TPrWRBlXHa5Hg_aem_G9JK63v-ShE78y3sFFO8Mg&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4vPCQVibxanzcb5veZad5HDxeo-11LEngSeFxNGXuL7L_XN-yiruFew-xbyg_aem_qnXg3QuwO3nhXjBo57-PjA&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR65XkG_W3MrN-RbLpy6kAjtYpVljelntZyLSIFXWJLFVK-km84wha-EasLEPg_aem_63YsjE30agUiRqhS5YhL8g&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Careers](https://www.facebook.com/careers)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR7gcsgdGONztxXbin73qzu7lt_vLT_QNlqCT_Bd6GSJPRAS5OQL53Fj1UjpuQ_aem_4hdJtCxgJL24bw31Z7KLHQ&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR4vPCQVibxanzcb5veZad5HDxeo-11LEngSeFxNGXuL7L_XN-yiruFew-xbyg_aem_qnXg3QuwO3nhXjBo57-PjA&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR65XkG_W3MrN-RbLpy6kAjtYpVljelntZyLSIFXWJLFVK-km84wha-EasLEPg_aem_63YsjE30agUiRqhS5YhL8g&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5hBvFEixQCYf5WPixqAUNwGXpCvV9qXGGgeXXkCLNd68jN6nKb2DPF7_uIXg_aem_95AS25xVeElWnTScWIzKwA&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5Hj93iw_p6eFiRd04q57TbEDdOvdkxrOCE0X4BTVzUp_wCS5GYk1hKz2QtFg_aem_ZmFrZWR1bW15MTZieXRlcw&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Careers](https://www.facebook.com/careers)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)Build with Meta[AI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.llama.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR7gcsgdGONztxXbin73qzu7lt_vLT_QNlqCT_Bd6GSJPRAS5OQL53Fj1UjpuQ_aem_4hdJtCxgJL24bw31Z7KLHQ&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Meta Horizon](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fhorizon%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR77uAVW7l2NVFKdbGjm7cm1oVuujv0ie7Fn9XmxMzrHE9e_cDz-iebZc5GIcg_aem_3z8Btth71gnmgMfIvIgU5A&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Social technologies](https://developers.facebook.com/social-technologies/)[Wearables](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fwearables%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR5Hj93iw_p6eFiRd04q57TbEDdOvdkxrOCE0X4BTVzUp_wCS5GYk1hKz2QtFg_aem_ZmFrZWR1bW15MTZieXRlcw&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)News[Meta for Developers](https://l.facebook.com/l.php?u=https%3A%2F%2Fdevelopers.meta.com%2Fblog%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR7kaB725f1mqZOEmfifxiLZrvaLLAkcq7wtOiCjLX21UfZKe6RaDCV0zshVjQ_aem_xKm2ZcAyoNlk1auzJmtK7g&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Blog](https://developers.facebook.com/blog/)[Success stories](https://developers.facebook.com/success-stories/)Support[Developer Support](https://developers.facebook.com/support/)[Bug tool](https://developers.facebook.com/support/bugs/)[Platform status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExczI3SHZlNGdvMmlHblBZYnNydGMGYXBwX2lkATAAAR77uAVW7l2NVFKdbGjm7cm1oVuujv0ie7Fn9XmxMzrHE9e_cDz-iebZc5GIcg_aem_3z8Btth71gnmgMfIvIgU5A&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Developer community forum](https://www.facebook.com/groups/fbdevelopers/)[Report an incident](https://developers.facebook.com/incident/report/)About us[About](https://l.facebook.com/l.php?u=https%3A%2F%2Fabout.fb.com%2F&h=AT4lE5Syrl_NfhhloDvWPxxRqdivSDhWCZeHY5wilBtRcWdkfQtqjIwXWm6tPQSJSsYwTPUxaM_lHN8FXEVbeji-3McoMNzZtibHlXfuY0n-ClgKiar1SDml30_Aj-g0zvhBpOeSfkWNr4LSfeoLN6khwks)[Careers](https://www.facebook.com/careers)Terms and policies[Responsible platform initiatives](https://developers.facebook.com/products/responsible-platform-initiatives/)[Platform terms](https://developers.facebook.com/terms/dfc_platform_terms/)[Developer policies](https://developers.facebook.com/devpolicy/)[Privacy policy](https://www.facebook.com/about/privacy)[Cookies](https://www.facebook.com/help/cookies)English (US) react-mount-point-unstable Este documento foi útil?SimNão
