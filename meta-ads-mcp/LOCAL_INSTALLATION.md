@@ -98,7 +98,7 @@ Adicione ao `claude_desktop_config.json`:
 {
   "mcpServers": {
     "meta-ads": {
-      "command": "/CAMINHO/ABSOLUTO/template-agente-trafego-meta/meta-ads-mcp/.venv/bin/python",
+      "command": "/CAMINHO/ABSOLUTO/seu-projeto/meta-ads-mcp/.venv/bin/python",
       "args": ["-m", "meta_ads_mcp", "--transport", "stdio"],
       "env": {
         "META_ACCESS_TOKEN": "seu_token_aqui",
