@@ -62,22 +62,33 @@ MCP disponíveis. Em caso de dúvida sobre comportamento da API Meta, consulte
 
 ## Servidor MCP
 
-**Iniciar localmente:**
+Este projeto usa **`uv`** como gerenciador Python — funciona idêntico em
+Mac, Linux e Windows.
+
+**Iniciar o servidor manualmente:**
 
 ```bash
-cd meta-ads-mcp && .venv/bin/python start.py
+uv run --directory meta-ads-mcp python start.py
 ```
 
-Sempre use `.venv/bin/python` da pasta `meta-ads-mcp/.venv`. **Não use** `python3`
-do sistema, `poetry`, `pipenv`, nem instale dependências globalmente.
+Para uso com Claude Code, o `.mcp.json` na raiz já está configurado e usa
+`uv run` automaticamente.
 
-**Se o `.venv` não existir**, instale assim (uma vez):
+**Se for a primeira vez no projeto** (sem `.venv`), prepare o ambiente:
 
 ```bash
 cd meta-ads-mcp
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
+uv sync                                  # cria .venv e instala dependencias
+# (se preferir requirements.txt):
+# uv venv && uv pip install -r requirements.txt
 ```
+
+Se `uv` não estiver instalado, instale primeiro:
+
+- **Mac/Linux:** `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- **Windows (PowerShell):** `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+
+> **Não use** `pip` do sistema, `poetry`, `pipenv`, ou Python global. Sempre `uv`.
 
 ---
 
@@ -87,7 +98,11 @@ As credenciais Meta ficam em `meta-ads-mcp/.env`. Se o arquivo não existir:
 
 1. Pergunte ao usuário se ele já criou o app Meta. Se não, o oriente seguindo
    `META_APP_SETUP.md` (criação do app + 9 permissões obrigatórias do token).
-2. Copie o exemplo: `cp meta-ads-mcp/.env.example meta-ads-mcp/.env`
+2. Copie o exemplo (use a ferramenta de Write/Read do seu cliente, ou os
+   comandos abaixo conforme o sistema operacional):
+   - **Mac/Linux:** `cp meta-ads-mcp/.env.example meta-ads-mcp/.env`
+   - **Windows (PowerShell):** `Copy-Item meta-ads-mcp\.env.example meta-ads-mcp\.env`
+   - **Windows (CMD):** `copy meta-ads-mcp\.env.example meta-ads-mcp\.env`
 3. Peça ao usuário as 3 credenciais e preencha o `.env`:
    - `META_ACCESS_TOKEN`
    - `META_APP_ID`

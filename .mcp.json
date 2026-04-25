@@ -2,8 +2,17 @@
   "mcpServers": {
     "meta-ads": {
       "type": "stdio",
-      "command": "./meta-ads-mcp/.venv/bin/python",
-      "args": ["-m", "meta_ads_mcp", "--transport", "stdio"]
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "./meta-ads-mcp",
+        "python",
+        "-m",
+        "meta_ads_mcp",
+        "--transport",
+        "stdio"
+      ]
     }
   }
 }

@@ -4,35 +4,52 @@ Guia de instalação do servidor MCP no seu computador. **Para o fluxo completo
 do template (incluindo deploy Railway)**, veja `INSTALACAO.md` na raiz do
 projeto.
 
-> Este arquivo cobre só a parte do servidor MCP em si.
+> Este projeto usa **`uv`** como gerenciador Python — funciona idêntico em
+> Mac, Linux e Windows.
 
 ---
 
 ## Pré-requisitos
 
-- **Python 3.10+**
-- **[uv](https://docs.astral.sh/uv/)** (recomendado) ou `pip` + `venv`
+- **[uv](https://docs.astral.sh/uv/)** (gerencia Python e dependências)
 - **Conta Meta Ads** com acesso à conta de anúncios
 - **Cliente MCP** (Claude Code, Claude Desktop, Cursor, etc.)
 
+> Você **não** precisa instalar Python manualmente — o `uv` baixa a versão
+> certa automaticamente.
+
+### Instalar o uv (uma vez)
+
+- **Mac/Linux:**
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+- **Windows (PowerShell):**
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+Reabra o terminal depois da instalação.
+
 ---
 
-## Instalação
+## Instalação do projeto
 
 A partir da raiz do template:
 
 ```bash
 cd meta-ads-mcp
-
-# Criar venv
-python3 -m venv .venv
-
-# Instalar dependências
-.venv/bin/pip install -r requirements.txt
-
-# (Opcional) instalar em modo dev se for editar o código
-.venv/bin/pip install -e .
+uv sync
 ```
+
+`uv sync` cria o `.venv` automaticamente e instala todas as dependências
+do `pyproject.toml`.
+
+> Alternativa via `requirements.txt`:
+> ```bash
+> uv venv
+> uv pip install -r requirements.txt
+> ```
 
 ---
 
@@ -40,7 +57,7 @@ python3 -m venv .venv
 
 Este template usa **token Meta direto**. Você precisa de 3 variáveis no `.env`:
 
-```bash
+```
 META_ACCESS_TOKEN=...
 META_APP_ID=...
 META_APP_SECRET=...
@@ -51,25 +68,37 @@ Para gerar essas credenciais (criar app Meta + token com 9 permissões), siga
 
 Copie o `.env.example` e preencha:
 
-```bash
-cp .env.example .env
-# Edite .env com seu editor preferido
-```
+- **Mac/Linux:**
+  ```bash
+  cp .env.example .env
+  ```
+- **Windows (PowerShell):**
+  ```powershell
+  Copy-Item .env.example .env
+  ```
+- **Windows (CMD):**
+  ```cmd
+  copy .env.example .env
+  ```
+
+Edite o `.env` no seu editor preferido (ou peça ao Claude Code para preencher).
 
 ---
 
 ## Rodar o servidor
 
+A partir da raiz do template (não da pasta `meta-ads-mcp/`):
+
 ### Modo stdio (uso com Claude Code / Claude Desktop)
 
 ```bash
-.venv/bin/python -m meta_ads_mcp --transport stdio
+uv run --directory meta-ads-mcp python -m meta_ads_mcp --transport stdio
 ```
 
 ### Modo streamable HTTP (uso via API ou Railway)
 
 ```bash
-.venv/bin/python start.py
+uv run --directory meta-ads-mcp python start.py
 ```
 
 A porta padrão é `8080`. Configurável via `PORT` no `.env`.
@@ -80,8 +109,8 @@ A porta padrão é `8080`. Configurável via `PORT` no `.env`.
 
 ### Claude Code
 
-O arquivo `.mcp.json` na raiz do template já está configurado. Apenas garanta
-que o `.venv` foi criado e abra o Claude Code na pasta:
+O arquivo `.mcp.json` na raiz do template já está configurado e usa `uv run`.
+Basta abrir o Claude Code na pasta do projeto:
 
 ```bash
 claude
@@ -98,8 +127,17 @@ Adicione ao `claude_desktop_config.json`:
 {
   "mcpServers": {
     "meta-ads": {
-      "command": "/CAMINHO/ABSOLUTO/seu-projeto/meta-ads-mcp/.venv/bin/python",
-      "args": ["-m", "meta_ads_mcp", "--transport", "stdio"],
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "/CAMINHO/ABSOLUTO/seu-projeto/meta-ads-mcp",
+        "python",
+        "-m",
+        "meta_ads_mcp",
+        "--transport",
+        "stdio"
+      ],
       "env": {
         "META_ACCESS_TOKEN": "seu_token_aqui",
         "META_APP_ID": "seu_app_id",
@@ -110,7 +148,9 @@ Adicione ao `claude_desktop_config.json`:
 }
 ```
 
-> Substitua `/CAMINHO/ABSOLUTO/` pelo caminho real da pasta no seu computador.
+> Substitua `/CAMINHO/ABSOLUTO/seu-projeto/` pelo caminho real da pasta. No
+> Windows o caminho usa barras invertidas duplas no JSON
+> (`C:\\Users\\seu-nome\\seu-projeto\\meta-ads-mcp`).
 
 ---
 
@@ -139,10 +179,10 @@ servidor pode armazenar o token nestes locais:
 
 ```bash
 # Verifica que importa sem erro
-.venv/bin/python -c "import meta_ads_mcp; print('OK')"
+uv run --directory meta-ads-mcp python -c "import meta_ads_mcp; print('OK')"
 
 # Testa o entry-point
-.venv/bin/python -m meta_ads_mcp --help
+uv run --directory meta-ads-mcp python -m meta_ads_mcp --help
 ```
 
 ---
@@ -157,9 +197,14 @@ Logs ficam em:
 
 Para modo verboso:
 
-```bash
-META_ADS_DEBUG=true .venv/bin/python start.py
-```
+- **Mac/Linux:**
+  ```bash
+  META_ADS_DEBUG=true uv run --directory meta-ads-mcp python start.py
+  ```
+- **Windows (PowerShell):**
+  ```powershell
+  $env:META_ADS_DEBUG="true"; uv run --directory meta-ads-mcp python start.py
+  ```
 
 ---
 
@@ -167,12 +212,12 @@ META_ADS_DEBUG=true .venv/bin/python start.py
 
 | Problema | Solução |
 |---|---|
-| `command not found: python3` | Instale Python 3.10+ |
-| `ModuleNotFoundError: No module named 'mcp'` | Rode `.venv/bin/pip install -r requirements.txt` |
-| `"Insufficient permissions"` em chamadas Meta | Verifique se seu token tem as 9 permissões em `TOKEN_PERMISSIONS.md` |
-| `act_XXXX not found` | Confirme o ID com `get_ad_accounts` e formato `act_<id>` |
-| Rate limit | Espere antes de tentar de novo, evite rodar múltiplas instâncias |
-| Token expirou | Gere token de longa duração no Access Token Tool (passo 5 do `META_APP_SETUP.md`) |
+| `command not found: uv` | Instale o `uv` (veja "Pré-requisitos" no topo). Reabra o terminal depois. |
+| `ModuleNotFoundError: No module named 'mcp'` | Rode `uv sync` na pasta `meta-ads-mcp`. |
+| `"Insufficient permissions"` em chamadas Meta | Verifique se seu token tem as 9 permissões em `TOKEN_PERMISSIONS.md`. |
+| `act_XXXX not found` | Confirme o ID com `get_ad_accounts` e formato `act_<id>`. |
+| Rate limit | Espere antes de tentar de novo, evite rodar múltiplas instâncias. |
+| Token expirou | Gere token de longa duração no Access Token Tool (passo 5 do `META_APP_SETUP.md`). |
 
 ---
 
@@ -180,20 +225,16 @@ META_ADS_DEBUG=true .venv/bin/python start.py
 
 ### Variáveis de ambiente extras
 
-```bash
-# Versão da API
-export META_API_VERSION=v25.0
+Defina no `.env` ou exporte na sessão:
 
-# Timeout em segundos
-export META_API_TIMEOUT=30
+```
+META_API_VERSION=v25.0
+META_API_TIMEOUT=30
+META_ADS_DEBUG=true
 
-# Modo debug
-export META_ADS_DEBUG=true
-
-# Desativar tools opcionais
-export META_ADS_DISABLE_LOGIN_LINK=1
-export META_ADS_DISABLE_CALLBACK_SERVER=1
-export META_ADS_DISABLE_ADS_LIBRARY=1
+META_ADS_DISABLE_LOGIN_LINK=1
+META_ADS_DISABLE_CALLBACK_SERVER=1
+META_ADS_DISABLE_ADS_LIBRARY=1
 ```
 
 ### Transporte HTTP

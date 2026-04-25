@@ -16,7 +16,10 @@ Tempo estimado: **15 minutos** na primeira vez.
 
 ---
 
-## Parte A — Rodar localmente (desenvolvimento)
+## Parte A — Rodar localmente (Mac, Linux ou Windows)
+
+> Este projeto usa **`uv`** como gerenciador Python. Os mesmos comandos
+> funcionam idênticos em Mac, Linux e Windows.
 
 ### 1. Clonar o template
 
@@ -43,10 +46,16 @@ O Claude vai ler automaticamente o `CLAUDE.md` e entender o projeto.
 
 Cole exatamente isso no Claude Code:
 
-> Prepare o ambiente: instale o `uv` se não tiver, crie o venv em
-> `meta-ads-mcp/.venv` e instale as dependências do `requirements.txt`.
+> Prepare o ambiente: instale o `uv` se eu não tiver (use o instalador oficial
+> do meu sistema operacional), crie o venv em `meta-ads-mcp/.venv` e instale
+> as dependências do `requirements.txt`.
 
-O Claude vai rodar tudo no terminal pra você. Não precisa saber Python.
+O Claude detecta seu sistema e roda os comandos certos:
+
+- **Mac/Linux:** `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- **Windows (PowerShell):** `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+
+Você não precisa saber Python — o Claude faz tudo no terminal pra você.
 
 ### 4. Criar o app Meta
 
@@ -68,10 +77,11 @@ quando o Claude pedir. Ele preenche o `.env` pra você.
 ### 6. Iniciar o servidor MCP
 
 ```bash
-cd meta-ads-mcp && .venv/bin/python start.py
+uv run --directory meta-ads-mcp python start.py
 ```
 
-Ou peça ao Claude pra iniciar.
+Esse comando funciona idêntico em Mac, Linux e Windows. Ou simplesmente peça
+ao Claude pra iniciar.
 
 ### 7. Testar
 
@@ -166,7 +176,8 @@ Não precisa configurar agora — quando chegar a hora, o Claude orienta.
 
 | Erro | Solução |
 |---|---|
-| `python3: command not found` | Instale Python 3.10+: peça ao Claude `instale Python via brew/winget`. |
+| `uv: command not found` | Mac/Linux: `curl -LsSf https://astral.sh/uv/install.sh \| sh`. Windows (PowerShell): `irm https://astral.sh/uv/install.ps1 \| iex`. Reabra o terminal depois. |
+| `python: command not found` | O `uv` baixa o Python automaticamente. Se persistir, peça ao Claude para instalar Python 3.10+. |
 | `git: command not found` | Instale Git: `brew install git` (Mac) ou `winget install Git.Git` (Windows). |
 | `claude: command not found` | Instale Claude Code: [claude.ai/code](https://claude.ai/code). |
 | Token Meta "expired" | Gere um novo no Graph API Explorer (veja `META_APP_SETUP.md`). |
